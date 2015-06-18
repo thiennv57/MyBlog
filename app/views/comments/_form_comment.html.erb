@@ -1,0 +1,16 @@
+<%= form_for(@comment = Comment.new) do |f| %>
+      <span class="field">
+        <% if current_user?(entry.user) %>
+          <%= link_to image_tag("thien.jpg", alt: "Rails logo",:width => 50, :height => 50),current_user %>
+        <% else %>
+          <%= link_to gravatar_for(entry.user, size: 50), entry.user %>
+        <% end %>
+        <%= f.text_field :body,placeholder: "comment..."  %>
+      </span>
+      <div class="field">
+        <%= f.hidden_field :currentuser_id, :value => current_user.id%>
+      </div>
+      <div class="field">
+        <%= f.hidden_field :entry_id, :value => entry.id%>
+      </div>
+    <% end %>

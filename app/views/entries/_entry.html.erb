@@ -1,0 +1,60 @@
+<li id="<%= entry.id %>">
+  <%= link_to gravatar_for(entry.user, size: 50), entry.user %>
+  <span class="user"><b><%= link_to entry.user.name, entry.user %></b></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(entry.created_at) %> ago.
+  </span>
+  <span>
+    <% if current_user?(entry.user) %>
+      <%= link_to "delete", entry, method: :delete,
+                                       data: { confirm: "You sure?" } %>
+    <% else %>
+      </br>
+    <% end %>
+  </span>
+</li>
+<li>
+  <span class="title">
+    <b><%= entry.title %></b>
+  </span>
+  <span class="content">
+    <%= entry.content %>
+    <%= image_tag entry.picture.url if entry.picture? %>
+  </span>
+</li>
+<li class="comments">
+  <!--Hien thi comment-->
+  <% entry.comments.each do |comment| %>
+    <div class="row">
+      <div class="col-md-3">
+        <%= link_to gravatar_for(comment.user, size: 40), comment.user %>
+        <span class="user text-info"><%= comment.user.name %>: </span>
+        <span class="timestamp">
+          <%= time_ago_in_words(comment.created_at) %> ago.
+        </span>
+      </div>
+      <div class="col-md-9">
+        <span class="body">
+          <%= comment.body %>
+        </span>
+      </div>
+    </div>
+  <% end %>
+</li>
+<li>
+  <!--Comment moi-->
+  <% if logged_in? %>
+    <%= form_for(@comment = Comment.new) do |f| %>
+      <div class="field">
+        <%= link_to gravatar_for(current_user, size: 40), current_user %>
+        <%= f.text_field :body, placeholder: "Comment..."  %>
+      </div>
+      <div class="field">
+        <%= f.hidden_field :user_id, :value => current_user.id%>
+      </div>
+      <div class="field">
+        <%= f.hidden_field :entry_id, :value => entry.id%>
+      </div>
+    <% end %>
+  <% end %>
+</li>
