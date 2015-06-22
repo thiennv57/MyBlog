@@ -46,8 +46,14 @@
   <% if logged_in? %>
     <%= form_for(@comment = Comment.new) do |f| %>
       <div class="field">
-        <%= link_to gravatar_for(current_user, size: 40), current_user %>
-        <%= f.text_field :body, placeholder: "Comment..."  %>
+        <div class="row">
+          <div class="col-md-1">
+            <%= link_to gravatar_for(current_user, size: 40), current_user %>
+          </div>
+          <div class="col-md-11">
+            <%= f.text_field(:body, class: 'form-control', placeholder: "Comment..."  )%>
+          </div>
+        </div>
       </div>
       <div class="field">
         <%= f.hidden_field :user_id, :value => current_user.id%>
